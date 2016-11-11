@@ -10,6 +10,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -41,6 +42,9 @@ public class Base64ToGallery extends CordovaPlugin {
     String filePrefix           = args.optString(1);
     boolean mediaScannerEnabled = args.optBoolean(2);
 
+    // alias for the directory to write to e.g DATA_DIRECTORY
+    String writeToDirectory     = args.optString(3);
+
     // isEmpty() requires API level 9
     if (base64.equals(EMPTY_STR)) {
       callbackContext.error("Missing base64 string");
@@ -56,7 +60,7 @@ public class Base64ToGallery extends CordovaPlugin {
     } else {
 
       // Save the image
-      File imageFile = savePhoto(bmp, filePrefix);
+      File imageFile = savePhoto(bmp, filePrefix, writeToDirectory);
 
       if (imageFile == null) {
         callbackContext.error("Error while saving image");
@@ -73,7 +77,7 @@ public class Base64ToGallery extends CordovaPlugin {
     return true;
   }
 
-  private File savePhoto(Bitmap bmp, String prefix) {
+  private File savePhoto(Bitmap bmp, String prefix, String writeToDirectory) {
     File retVal = null;
 
     try {
@@ -91,12 +95,17 @@ public class Base64ToGallery extends CordovaPlugin {
 
       File folder;
 
-      /*
-       * File path = Environment.getExternalStoragePublicDirectory(
-       * Environment.DIRECTORY_PICTURES ); //this throws error in Android
-       * 2.2
-       */
-      if (check >= 1) {
+      // use /data/data/com.app/files directory
+      if (writeToDirectory.equals("DATA_DIRECTORY")) {
+        Context context = cordova.getActivity();
+        folder = context.getFilesDir();
+
+      } else if (check >= 1) {
+        /*
+         * File path = Environment.getExternalStoragePublicDirectory(
+         * Environment.DIRECTORY_PICTURES ); //this throws error in Android
+         * 2.2
+         */
         folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
         if (!folder.exists()) {
@@ -106,8 +115,6 @@ public class Base64ToGallery extends CordovaPlugin {
       } else {
         folder = Environment.getExternalStorageDirectory();
       }
-
-      folder = ContextWrapper.getFilesDir();
 
       File imageFile = new File(folder, prefix + date + ".png");
 
