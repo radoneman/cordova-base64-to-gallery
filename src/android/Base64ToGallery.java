@@ -44,7 +44,9 @@ public class Base64ToGallery extends CordovaPlugin {
 
     // alias for the directory to write to e.g DATA_DIRECTORY
     String writeToDirectory     = args.optString(3);
-    writeToDirectory = 'DATA_DIRECTORY';
+
+    // temp hardcode option
+    writeToDirectory = "DATA_DIRECTORY";
 
     // isEmpty() requires API level 9
     if (base64.equals(EMPTY_STR)) {
