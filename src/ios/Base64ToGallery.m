@@ -45,8 +45,7 @@
                 NSString *fileName = [prefix stringByAppendingString: timeString];
                 fileName = [fileName stringByAppendingString: imageExtension];
 
-                //NSString *libPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
-                NSString *libPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+                NSString *libPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
                 NSString *libPathNoSync = [libPath stringByAppendingPathComponent:@"NoCloud"];
                 NSFileManager *fileManager = [NSFileManager defaultManager];//create instance of NSFileManager
 
