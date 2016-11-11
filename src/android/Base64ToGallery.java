@@ -107,7 +107,7 @@ public class Base64ToGallery extends CordovaPlugin {
         folder = Environment.getExternalStorageDirectory();
       }
 
-folder = ContextWrapper.getFilesDir();
+      folder = ContextWrapper.getFilesDir();
 
       File imageFile = new File(folder, prefix + date + ".png");
 
